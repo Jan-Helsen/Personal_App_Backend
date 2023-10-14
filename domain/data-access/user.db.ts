@@ -23,7 +23,10 @@ const getUserById = async ({ id }: UserDelete): Promise<User> => {
             where: { id },
             include: { todos: true, habits: true, deadlines: true },
         });
-        return mapToUser(userPrisma);
+        if (userPrisma) {
+            return mapToUser(userPrisma);
+        }
+        return null;
     } 
     catch (error) {
         console.log(error)
@@ -37,7 +40,10 @@ const getUserByEmail = async ({ email } : UserEmail): Promise<User> => {
             where: { email },
             include: { todos: true, habits: true, deadlines: true },
         });
-        return mapToUser(userPrisma);
+        if (userPrisma) {
+            return mapToUser(userPrisma);
+        }
+        return null;
     }
     catch (error) {
         console.log(error)

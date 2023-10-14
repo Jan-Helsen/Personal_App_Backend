@@ -17,6 +17,7 @@ const getUserById = async ({ id } : { id : string }): Promise<User> => {
         throw new Error("id must be numeric.");
     }
     const user = await userDb.getUserById({ id: parseInt(id) })
+    console.log(user)
     if (!user) {
         throw new Error(`User with ID: ${id} does not exist.`)
     }

@@ -6,7 +6,7 @@
  *              type: http
  *              scheme: bearer
  *              bearerFormat: JWT
- *      schemes:
+ *      schemas:
  *          User:
  *              type: object
  *              properties:
@@ -146,7 +146,7 @@ import express, { Request, Response } from "express";
 import userService from "../service/user.service";
 import { UserInput, UserUpdateInput, UserDelete, UserEmail, UserLogin } from "../types";
 
-const userRouter = express.Router()
+const userRouter = express.Router();
 /**
  * @swagger
  * /users:
@@ -179,7 +179,7 @@ userRouter.get("/", async (req: Request, res: Response) => {
 });
 /**
  * @swagger
- * /users/{id}
+ * /users/{id}:
  *  get:
  *      security:
  *          - bearerAuth: []
@@ -197,6 +197,14 @@ userRouter.get("/", async (req: Request, res: Response) => {
  *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/UserError'
+ *      parameters:
+ *        - name: id
+ *          in: path
+ *          description: User ID
+ *          required: true
+ *          schema:
+ *              type: integer
+ *              format: int64
  */
 userRouter.get("/:id", async (req: Request, res: Response) => {
     try {
@@ -206,7 +214,7 @@ userRouter.get("/:id", async (req: Request, res: Response) => {
     catch (error) {
         res.status(500).json({ status: 'error', errorMessage: error.message});    
     }
-})
+});
 /**
  * @swagger
  * /users/getUserByEmail:
@@ -243,7 +251,7 @@ userRouter.post('/getUserByEmail', async (req: Request, res: Response) => {
     catch (error) {
         res.status(500).json({ status: "error", errorMessage: error.message });    
     }
-})
+});
 /**
  * @swagger
  * /users/login:
@@ -279,3 +287,114 @@ userRouter.post("/login", async (req: Request, res: Response) => {
         res.status(401).json({ status: "unauthorized", errorMessage: error.message });
     }
 });
+/**
+ * @swagger
+ * /users/signup:
+ *  post:
+ *      summary: Add a user.
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/UserInput'
+ *      responses:
+ *          200:
+ *              description: The created user object.
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/User'
+ *          500:
+ *              description: Returns an error
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/UserError'
+ */
+userRouter.post("/signup", async (req: Request, res: Response) => {
+    const userInput = <UserInput>req.body;
+    try {
+        const user = await userService.createUser(userInput);
+        res.status(200).json(user);    
+    } 
+    catch (error) {
+        res.status(500).json({ status: 'error', errorMessage: error.message });
+    }
+});
+/**
+ * @swagger
+ * /users:
+ *  put:
+ *      security:
+ *          - bearerAuth: []
+ *      summary: Update a user.
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/UserUpdateInput'
+ *      responses:
+ *          200:
+ *              description: The updated user object.
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/User'
+ *          500:
+ *              description: Returns an error
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/UserError'
+ */
+userRouter.put("/", async (req: Request, res: Response) => {
+    const userInput = <UserUpdateInput>req.body;
+    try {
+        const user = await userService.updateUser(userInput);
+        res.status(200).json(user);    
+    } 
+    catch (error) {
+        res.status(500).json({ status: 'error', errorMessage: error.message });
+    }
+});
+/**
+ * @swagger
+ * /users:
+ *  delete:
+ *      security:
+ *          - bearerAuth: []
+ *      summary: Delete a user.
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/UserDelete'
+ *      responses:
+ *          200:
+ *              description: User that was deleted.
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/User'
+ *          500:
+ *              description: Returns an error
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/UserError'
+ */
+userRouter.delete("/", async (req: Request, res: Response) => {
+    const userInput = <UserDelete>req.body;
+    try {
+        const user = await userService.deleteUserWithId(userInput);
+        res.status(200).json(user);    
+    } 
+    catch (error) {
+        res.status(500).json({ status: 'error', errorMessage: error.message });
+    }
+});
+
+export default userRouter;

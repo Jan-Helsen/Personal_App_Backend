@@ -4,13 +4,21 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
+import { expressjwt } from 'express-jwt';
+import userRouter from './controller/user.routes';
 
 const app = express();
 dotenv.config();
 const port = process.env.APP_PORT || 8000;
+const jwtSecret = process.env.JWT_SECRET;
 
 app.use(cors({ origin: "http://localhost:8000"}));
 app.use(bodyParser.json());
+// app.use(
+//     expressjwt({ secret: jwtSecret, algorithms: ['HS256'] }).unless({
+//         path: [/^\/api-docs\/.*/, '/users/login', '/users/signup', '/status'],
+//     })
+// );
 
 const swaggerOpts = {
     definition: {
@@ -24,6 +32,8 @@ const swaggerOpts = {
 };
 
 const swaggerSpec = swaggerJsdoc(swaggerOpts);
+
+app.use("/users", userRouter);
 
 app.get('/status', (req, res) => {
     res.json({ message: 'Back-end is running...' });
