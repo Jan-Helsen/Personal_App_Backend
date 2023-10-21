@@ -6,6 +6,8 @@ import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { expressjwt } from 'express-jwt';
 import userRouter from './controller/user.routes';
+import habitRouter from './controller/habit.routes';
+import todoRouter from './controller/todo.routes';
 
 const app = express();
 dotenv.config();
@@ -34,6 +36,8 @@ const swaggerOpts = {
 const swaggerSpec = swaggerJsdoc(swaggerOpts);
 
 app.use("/users", userRouter);
+app.use("/habits", habitRouter);
+app.use("/todos", todoRouter);
 
 app.get('/status', (req, res) => {
     res.json({ message: 'Back-end is running...' });

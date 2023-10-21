@@ -3,7 +3,6 @@ import { mapToUser, mapToUsers } from "./mappers/user.mapper";
 import { User } from "../model/User";
 import database from "./database"
 
-
 const getAllUsers = async (): Promise<User[]> => {
     try {
         const usersPrisma = await database.user.findMany({
@@ -60,25 +59,19 @@ const createUser = async (user : UserInput): Promise<User> => {
                 email: user.email,
                 password: user.password,
                 todos: {
-                    connect: [
-                        ...user.todosIds.map(id => {
+                    connect: user.todosIds.map(id => {
                             return { id };
                         }),
-                    ],
                 },
                 habits: {
-                    connect: [
-                        ...user.habitsIds.map(id => {
+                    connect: user.habitsIds.map(id => {
                             return { id };
                         })
-                    ]
                 },
                 deadlines: {
-                    connect: [
-                        ...user.deadlinesIds.map(id => {
+                    connect: user.deadlinesIds.map(id => {
                             return { id };
                         })
-                    ]
                 },
             },
         });
@@ -100,25 +93,19 @@ const updateUser = async (userUpdateInput : UserUpdateInput): Promise<User> => {
                 email: userUpdateInput.lastName,
                 password: userUpdateInput.password,
                 todos: {
-                    connect: [
-                        ...userUpdateInput.todosIds.map(id => {
+                    connect: userUpdateInput.todosIds.map(id => {
                             return { id };
                         }),
-                    ],
                 },
                 habits: {
-                    connect: [
-                        ...userUpdateInput.habitsIds.map(id => {
+                    connect: userUpdateInput.habitsIds.map(id => {
                             return { id };
                         })
-                    ]
                 },
                 deadlines: {
-                    connect: [
-                        ...userUpdateInput.deadlinesIds.map(id => {
+                    connect: userUpdateInput.deadlinesIds.map(id => {
                             return { id };
                         })
-                    ]
                 }
             }
         });
@@ -130,7 +117,7 @@ const updateUser = async (userUpdateInput : UserUpdateInput): Promise<User> => {
     }
 }
 
-const deleteUserWithId = async ({ id }: UserDelete) => {
+const deleteUserWithId = async ({ id }: UserDelete): Promise<User> => {
     try {
         const userPrisma = await database.user.delete({
             where: { id }
@@ -149,4 +136,4 @@ export default {
     createUser,
     updateUser,
     deleteUserWithId,
-}
+};

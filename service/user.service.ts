@@ -17,7 +17,6 @@ const getUserById = async ({ id } : { id : string }): Promise<User> => {
         throw new Error("id must be numeric.");
     }
     const user = await userDb.getUserById({ id: parseInt(id) })
-    console.log(user)
     if (!user) {
         throw new Error(`User with ID: ${id} does not exist.`)
     }
@@ -30,7 +29,7 @@ const getUserByEmail = async ({ email } : { email: string }): Promise<User> => {
         throw new Error(`User with email: ${email} does not exist.`)
     }
     return user;
-}
+};
 
 const createUser = async (userInput: UserInput): Promise<User> => {
     const existingUser = await userDb.getUserByEmail({ email: userInput.email })
@@ -86,7 +85,7 @@ const deleteUserWithId = async ({ id }: UserDelete): Promise<User> => {
     await getUserById({ id: id.toString() })
     const user = await userDb.deleteUserWithId({ id });
     return user;
-}
+};
 
 const authenticate = async ({ email, password }: UserLogin): Promise<string> => {
     const user = await getUserByEmail({email})
@@ -95,7 +94,7 @@ const authenticate = async ({ email, password }: UserLogin): Promise<string> => 
         throw new Error("Incorrect password.")
     }
     return generateJwtToken(email);
-}
+};
 
 export default {
     getAllUsers,
@@ -105,4 +104,4 @@ export default {
     updateUser,
     deleteUserWithId,
     authenticate,
-}
+};

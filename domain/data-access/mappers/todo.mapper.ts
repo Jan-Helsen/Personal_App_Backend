@@ -1,5 +1,5 @@
 import { Todo as TodoPrisma, User as UserPrisma } from "@prisma/client"
-import { Todo } from "../../model/Todo"
+import { Todo } from "../../model/Todo";
 import { mapToUser } from "./user.mapper";
 
 const mapToTodo = ({
