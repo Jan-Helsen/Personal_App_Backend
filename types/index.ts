@@ -1,4 +1,3 @@
-
 export type UserInput = {
     firstName: string;
     lastName: string;
@@ -31,6 +30,11 @@ export type UserUpdateInput = {
 export type UserLogin = {
     email: string;
     password: string;
+}
+
+export type FriendsInput = {
+    userIdA: number,
+    userIdB: number,
 }
 
 export type HabitInput = {
@@ -69,4 +73,40 @@ export type TodoUpdateInput = {
     name: string;
     description: string;
     userId: number;
+}
+
+export type DeadlineInput = {
+    name: string;
+    subject: string;
+    description: string;
+    endDate: Date;
+    userId: number;
+}
+
+export type DeadlineUpdateInput = {
+    id: number;
+    name: string;
+    subject: string;
+    description: string;
+    endDate: Date;
+    userId: number;
+}
+
+export type DeadlineDelete = {
+    id: number;
+}
+
+export type ExcerciseInput = {
+    name: string;
+    img: string;
+}
+
+export type ExcerciseUpdateInput = {
+    id: number;
+    name: string;
+    img: string;
+}
+
+export type ExcerciseDelete = {
+    id: number;
 }

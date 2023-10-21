@@ -8,6 +8,8 @@ import { expressjwt } from 'express-jwt';
 import userRouter from './controller/user.routes';
 import habitRouter from './controller/habit.routes';
 import todoRouter from './controller/todo.routes';
+import deadlineRouter from './controller/deadline.routes';
+import excerciseRouter from './controller/excercise.routes';
 
 const app = express();
 dotenv.config();
@@ -36,8 +38,10 @@ const swaggerOpts = {
 const swaggerSpec = swaggerJsdoc(swaggerOpts);
 
 app.use("/users", userRouter);
-app.use("/habits", habitRouter);
 app.use("/todos", todoRouter);
+app.use("/habits", habitRouter);
+app.use("/deadlines", deadlineRouter);
+app.use("/excercises", excerciseRouter);
 
 app.get('/status', (req, res) => {
     res.json({ message: 'Back-end is running...' });

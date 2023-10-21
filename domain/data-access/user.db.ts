@@ -1,4 +1,4 @@
-import { UserDelete, UserInput, UserEmail, UserUpdateInput } from "../../types";
+import { UserDelete, UserInput, UserEmail, UserUpdateInput, FriendsInput } from "../../types";
 import { mapToUser, mapToUsers } from "./mappers/user.mapper";
 import { User } from "../model/User";
 import database from "./database"
@@ -129,6 +129,42 @@ const deleteUserWithId = async ({ id }: UserDelete): Promise<User> => {
     }
 }
 
+const addFriendship = async (friendsInput: FriendsInput): Promise<User[]> => {
+    try {
+        const userPrismaA = await database.user.update({
+            where: { id: friendsInput.userIdA },
+            data: { friends: { connect: [{ id: friendsInput.userIdB }]}},
+        });
+        const userPrismaB = await database.user.update({
+            where: { id: friendsInput.userIdB },
+            data: { friends: { connect: [{ id: friendsInput.userIdA }]}},
+        });
+        return mapToUsers([userPrismaA, userPrismaB]);
+    } 
+    catch (error) {
+        console.log(error)
+        throw new Error("error database check logs")
+    }
+}
+
+const removeFriendship = async (friendsInput: FriendsInput): Promise<User[]> => {
+    try {
+        const userPrismaA = await database.user.update({
+            where: { id: friendsInput.userIdA },
+            data: { friends: { disconnect: [{ id: friendsInput.userIdB }]}},
+        });
+        const userPrismaB = await database.user.update({
+            where: { id: friendsInput.userIdB },
+            data: { friends: { disconnect: [{ id: friendsInput.userIdA }]}},
+        });
+        return mapToUsers([userPrismaA, userPrismaB]);
+    } 
+    catch (error) {
+        console.log(error)
+        throw new Error("error database check logs")
+    }
+}
+
 export default {
     getAllUsers,
     getUserById,
@@ -136,4 +172,6 @@ export default {
     createUser,
     updateUser,
     deleteUserWithId,
+    addFriendship,
+    removeFriendship,
 };

@@ -5,6 +5,7 @@ import { mapToUser } from "./user.mapper";
 const mapToDeadline = ({
     id,
     name,
+    subject,
     description,
     endDate,
     user,
@@ -14,6 +15,7 @@ const mapToDeadline = ({
 }): Deadline => new Deadline({
     id,
     name,
+    subject,
     description,
     endDate,
     user: user ? mapToUser(user) : null,

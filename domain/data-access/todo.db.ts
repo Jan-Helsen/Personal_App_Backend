@@ -22,7 +22,10 @@ const getTodoById = async ({ id }: TodoDelete): Promise<Todo> => {
             where: { id },
             include: { user: true },
         });
-        return mapToTodo(todoPrisma);
+        if (todoPrisma) {
+            return mapToTodo(todoPrisma);
+        }
+        return null;
     } 
     catch (error) {
         console.log(error)
@@ -35,7 +38,10 @@ const createTodo = async (todo: TodoInput): Promise<Todo> => {
         const todoPrisma = await database.todo.create({
             data: todo
         });
-        return mapToTodo(todoPrisma); 
+        if (todoPrisma) {
+            return mapToTodo(todoPrisma);
+        }
+        return null;
     } 
     catch (error) {
         console.log(error)
@@ -47,11 +53,7 @@ const updateTodo = async (todoUpdateInput: TodoUpdateInput): Promise<Todo> => {
     try {
         const todoPrisma = await database.todo.update({
             where: { id: todoUpdateInput.id },
-            data: {
-                name: todoUpdateInput.name,
-                description: todoUpdateInput.description,
-                userId: todoUpdateInput.userId,
-            }
+            data: todoUpdateInput,
         });
         return mapToTodo(todoPrisma);
     } 

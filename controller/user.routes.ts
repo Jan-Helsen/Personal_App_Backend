@@ -131,7 +131,16 @@
  *                  message:
  *                      type: string
  *                      description: Message of succes.
- *          UserError:
+ *          FriendInput:
+ *              type: object
+ *              properties:
+ *                  userIdA:
+ *                      type: number
+ *                      description: Id of user A.
+ *                  userIdB:
+ *                      type: number
+ *                      description: Id of user B.
+ *          Error:
  *              type: object
  *              properties:
  *                  status:
@@ -144,7 +153,7 @@
 
 import express, { Request, Response } from "express";
 import userService from "../service/user.service";
-import { UserInput, UserUpdateInput, UserDelete, UserEmail, UserLogin } from "../types";
+import { UserInput, UserUpdateInput, UserDelete, UserEmail, UserLogin, FriendsInput } from "../types";
 
 const userRouter = express.Router();
 /**
@@ -166,7 +175,7 @@ const userRouter = express.Router();
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/UserError'
+ *                          $ref: '#/components/schemas/Error'
  */
 userRouter.get("/", async (req: Request, res: Response) => {
     try {
@@ -196,7 +205,7 @@ userRouter.get("/", async (req: Request, res: Response) => {
  *              constent:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/UserError'
+ *                          $ref: '#/components/schemas/Error'
  *      parameters:
  *        - name: id
  *          in: path
@@ -240,7 +249,7 @@ userRouter.get("/:id", async (req: Request, res: Response) => {
  *              constent:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/UserError'
+ *                          $ref: '#/components/schemas/Error'
  */
 userRouter.post('/getUserByEmail', async (req: Request, res: Response) => {
     try {
@@ -275,7 +284,7 @@ userRouter.post('/getUserByEmail', async (req: Request, res: Response) => {
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/UserError'
+ *                          $ref: '#/components/schemas/Error'
  */
 userRouter.post("/login", async (req: Request, res: Response) => {
     try {
@@ -310,7 +319,7 @@ userRouter.post("/login", async (req: Request, res: Response) => {
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/UserError'
+ *                          $ref: '#/components/schemas/Error'
  */
 userRouter.post("/signup", async (req: Request, res: Response) => {
     const userInput = <UserInput>req.body;
@@ -347,7 +356,7 @@ userRouter.post("/signup", async (req: Request, res: Response) => {
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/UserError'
+ *                          $ref: '#/components/schemas/Error'
  */
 userRouter.put("/", async (req: Request, res: Response) => {
     const userInput = <UserUpdateInput>req.body;
@@ -384,7 +393,7 @@ userRouter.put("/", async (req: Request, res: Response) => {
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/UserError'
+ *                          $ref: '#/components/schemas/Error'
  */
 userRouter.delete("/", async (req: Request, res: Response) => {
     const userInput = <UserDelete>req.body;
@@ -396,5 +405,78 @@ userRouter.delete("/", async (req: Request, res: Response) => {
         res.status(500).json({ status: 'error', errorMessage: error.message });
     }
 });
-
+/**
+ * @swagger
+ * /users/addFriend:
+ *  post:
+ *      security:
+ *          - bearerAuth: []
+ *      summary: Add a Friend.
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/FriendInput'
+ *      responses:
+ *          200:
+ *              description: User that was deleted.
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Users'
+ *          500:
+ *              description: Returns an error
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Error'
+ */
+userRouter.post("/addFriend", async (req: Request, res: Response) => {
+    const friendsInput = <FriendsInput>req.body;
+    try {
+        const users = await userService.addFriendship(friendsInput);
+        res.status(200).json(users);    
+    } 
+    catch (error) {
+        res.status(500).json({ status: 'error', errorMessage: error.message });
+    }
+})
+/**
+ * @swagger
+ * /users/removeFriend:
+ *  post:
+ *      security:
+ *          - bearerAuth: []
+ *      summary: Remove a Friend.
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/FriendInput'
+ *      responses:
+ *          200:
+ *              description: User that was deleted.
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Users'
+ *          500:
+ *              description: Returns an error
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Error'
+ */
+userRouter.post("/removeFriend", async (req: Request, res: Response) => {
+    const friendsInput = <FriendsInput>req.body;
+    try {
+        const users = await userService.removeFriendship(friendsInput);
+        res.status(200).json(users);    
+    } 
+    catch (error) {
+        res.status(500).json({ status: 'error', errorMessage: error.message });
+    }
+})
 export default userRouter;

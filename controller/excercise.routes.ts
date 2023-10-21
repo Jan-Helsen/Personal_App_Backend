@@ -7,81 +7,73 @@
  *              scheme: bearer
  *              bearerFormat: JWT
  *      schemas:
- *          Todo:
+ *          Excercise:
  *              type: object
  *              properties:
  *                  id:
  *                      type: number
- *                      description: Id of the Todo.
+ *                      description: Id of the Excercise.
  *                  name:
  *                      type: string
- *                      description: Name of the Todo.
- *                  description:
+ *                      description: Name of the Excercise.
+ *                  img:
  *                      type: string
- *                      description: Description of the Todo.
- *                  user:
- *                      type: User
- *                      description: User of the todo.
- *                  userId:
- *                      type: number
- *                      description: Id of the user.
- *          Todos:
+ *                      description: Img url of the Excercise.
+ *                  users:
+ *                      type: array
+ *                      items:
+ *                          $ref: '#components/schemas/User'
+ *          Excercises:
  *              type: array
  *              items:
- *                  $ref: '#/components/schemas/Todo'
- *          TodoInput:
+ *                  $ref: '#/components/schemas/Excercise'
+ *          ExcerciseInput:
  *              type: object
  *              properties:
  *                  name:
  *                      type: string
  *                      description: Name of the todo.
- *                  description:
+ *                  img:
  *                      type: string
- *                      description: Description of the todo.
- *                  userId:
- *                      type: number
- *                      description: Id of the user.
- *          TodoUpdateInput:
+ *                      description: Img url of the todo.
+ *          ExcerciseUpdateInput:
  *              type: object
  *              properties:
  *                  id:
  *                      type: number
- *                      description: Id of the todo.
+ *                      description: Id of the Excercise.
  *                  name:
  *                      type: string
- *                      description: Name of the todo.
- *                  description:
+ *                      description: Name of the Excercise.
+ *                  img:
  *                      type: string
- *                      description: Description of the todo.
- *                  userId:
- *                      type: number
- *                      description: Id of the user.
- *          TodoDelete:
+ *                      description: Img url of the Excercise.
+ *          ExcerciseDelete:
  *              type: object
  *              properties:
  *                  id:
  *                      type: number
- *                      description: Id of the todo.
+ *                      description: Id of the Excercise.
  */
 import express, { Request, Response } from "express";
-import todoService from "../service/todo.service";
-import { TodoInput, TodoDelete, TodoUpdateInput } from "../types";
+import excerciseService from "../service/excercise.service";
+import { ExcerciseInput, ExcerciseDelete, ExcerciseUpdateInput } from "../types";
 
-const todoRouter = express.Router();
+const excerciseRouter = express.Router();
 /**
  * @swagger
- * /todos:
+ * /excercises:
  *  get:
  *      security:
  *          - bearerAuth: []
- *      summary: Get all todos
+ *      summary: Get all excercises
  *      responses:
  *          200:
- *              description: Returns all todos, if there are no todos, an error is returned.
+ *              description: Returns all excercises, if there are no excercises, an error is returned.
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/Todos'
+ *                          $ref: '#/components/schemas/Excercises'
  *          500:
  *              description: Returns an error
  *              content:
@@ -89,10 +81,10 @@ const todoRouter = express.Router();
  *                      schema:
  *                          $ref: '#/components/schemas/Error'
  */
-todoRouter.get("/", async (req: Request, res: Response) => {
+excerciseRouter.get("/", async (req: Request, res: Response) => {
     try {
-        const todos = await todoService.getAllTodos();
-        res.status(200).json(todos);    
+        const excercises = await excerciseService.getAllExcercises();
+        res.status(200).json(excercises);    
     } 
     catch (error) {
         res.status(500).json({ status: "error", errorMessage: error.message });
@@ -100,18 +92,18 @@ todoRouter.get("/", async (req: Request, res: Response) => {
 });
 /**
  * @swagger
- * /todos/{id}:
+ * /excercises/{id}:
  *  get:
  *      security:
  *          - bearerAuth: []
- *      summary: Get a todo by ID
+ *      summary: Get a excercise by ID
  *      responses:
  *          200:
- *              description: Returns a todo. If the todo does not exist, an error is returned.
+ *              description: Returns a excercise. If the excercise does not exist, an error is returned.
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/Todo'
+ *                          $ref: '#/components/schemas/Excercise'
  *          500:
  *              description: Returns an error
  *              constent:
@@ -121,16 +113,16 @@ todoRouter.get("/", async (req: Request, res: Response) => {
  *      parameters:
  *        - name: id
  *          in: path
- *          description: Todo ID
+ *          description: Excercise ID
  *          required: true
  *          schema:
  *              type: integer
  *              format: int64
  */
-todoRouter.get("/:id", async (req: Request, res: Response) => {
+excerciseRouter.get("/:id", async (req: Request, res: Response) => {
     try {
-        const todo = await todoService.getTodoById({ id: parseInt(req.params.id)});
-        res.status(200).json(todo);
+        const excercise = await excerciseService.getExcerciseById({ id: parseInt(req.params.id)});
+        res.status(200).json(excercise);    
     } 
     catch (error) {
         res.status(500).json({ status: "error", errorMessage: error.message });
@@ -138,22 +130,22 @@ todoRouter.get("/:id", async (req: Request, res: Response) => {
 });
 /**
  * @swagger
- * /todos/createtodo:
+ * /excercises/createexcercise:
  *  post:
- *      summary: Add a todo.
+ *      summary: Add an excercise.
  *      requestBody:
  *          required: true
  *          content:
  *              application/json:
  *                  schema:
- *                      $ref: '#/components/schemas/TodoInput'
+ *                      $ref: '#/components/schemas/ExcerciseInput'
  *      responses:
  *          200:
- *              description: The created todo object.
+ *              description: The created excercise object.
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/Todo'
+ *                          $ref: '#/components/schemas/Excercise'
  *          500:
  *              description: Returns an error
  *              content:
@@ -161,48 +153,11 @@ todoRouter.get("/:id", async (req: Request, res: Response) => {
  *                      schema:
  *                          $ref: '#/components/schemas/Error'
  */
-todoRouter.post("/createtodo", async (req: Request, res: Response) => {
-    const todoInput = <TodoInput>req.body;
+excerciseRouter.post("/createexcercise", async (req: Request, res: Response) => {
+    const excerciseInput = <ExcerciseInput>req.body;
     try {
-        const todo = await todoService.createTodo(todoInput);
-        res.status(200).json(todo);
-    }
-    catch (error) {
-        res.status(500).json({ status: 'error', errorMessage: error.message });
-    }
-});
-/**
- * @swagger
- * /todos:
- *  put:
- *      security:
- *          - bearerAuth: []
- *      summary: Update a todo.
- *      requestBody:
- *          required: true
- *          content:
- *              application/json:
- *                  schema:
- *                      $ref: '#/components/schemas/TodoUpdateInput'
- *      responses:
- *          200:
- *              description: The updated todo object.
- *              content:
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/Todo'
- *          500:
- *              description: Returns an error
- *              content:
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/Error'
- */
-todoRouter.put("/", async (req: Request, res: Response) => {
-    const todoUpdateInput = <TodoUpdateInput>req.body;
-    try {
-        const todo = await todoService.updateTodo(todoUpdateInput);
-        res.status(200).json(todo);    
+        const excercise = await excerciseService.createExcercise(excerciseInput);    
+        res.status(200).json(excercise);
     } 
     catch (error) {
         res.status(500).json({ status: 'error', errorMessage: error.message });
@@ -210,24 +165,24 @@ todoRouter.put("/", async (req: Request, res: Response) => {
 });
 /**
  * @swagger
- * /todos:
- *  delete:
+ * /excercises:
+ *  put:
  *      security:
  *          - bearerAuth: []
- *      summary: Delete a todo.
+ *      summary: Update an excercise.
  *      requestBody:
  *          required: true
  *          content:
  *              application/json:
  *                  schema:
- *                      $ref: '#/components/schemas/TodoDelete'
+ *                      $ref: '#/components/schemas/ExcerciseUpdateInput'
  *      responses:
  *          200:
- *              description: Todo that was deleted.
+ *              description: The updated excercise object.
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/Todo'
+ *                          $ref: '#/components/schemas/Excercise'
  *          500:
  *              description: Returns an error
  *              content:
@@ -235,15 +190,52 @@ todoRouter.put("/", async (req: Request, res: Response) => {
  *                      schema:
  *                          $ref: '#/components/schemas/Error'
  */
-todoRouter.delete("/", async (req: Request, res: Response) => {
-    const todoInput = <TodoDelete>req.body;
+excerciseRouter.put("/", async (req: Request, res: Response) => {
+    const excerciseUpdateInput = <ExcerciseUpdateInput>req.body;
     try {
-        const todo = await todoService.deleteTodoWithId(todoInput);
-        res.status(200).json(todo);    
+        const excercise = await excerciseService.updateExcercise(excerciseUpdateInput);
+        res.status(200).json(excercise);    
+    } 
+    catch (error) {
+        res.status(500).json({ status: 'error', errorMessage: error.message });
+    }
+});
+/**
+ * @swagger
+ * /excercises:
+ *  delete:
+ *      security:
+ *          - bearerAuth: []
+ *      summary: Delete an excercise.
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/ExcerciseDelete'
+ *      responses:
+ *          200:
+ *              description: Excercise that was deleted.
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Excercise'
+ *          500:
+ *              description: Returns an error
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Error'
+ */
+excerciseRouter.delete("/", async (req: Request, res: Response) => {
+    const excerciseInput = <ExcerciseDelete>req.body;
+    try {
+        const excercise = await excerciseService.deleteExcerciseWithId(excerciseInput);
+        res.status(200).json(excercise);    
     } 
     catch (error) {
         res.status(500).json({ status: 'error', errorMessage: error.message });
     }
 });
 
-export default todoRouter;
+export default excerciseRouter;

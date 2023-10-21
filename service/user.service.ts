@@ -1,4 +1,4 @@
-import { UserDelete, UserInput, UserLogin, UserUpdateInput } from "../types"
+import { FriendsInput, UserDelete, UserInput, UserLogin, UserUpdateInput } from "../types"
 import userDb from "../domain/data-access/user.db"
 import generateJwtToken from "../Util/jwt";
 import { User } from "../domain/model/User"
@@ -96,6 +96,20 @@ const authenticate = async ({ email, password }: UserLogin): Promise<string> => 
     return generateJwtToken(email);
 };
 
+const addFriendship = async (friendsInput: FriendsInput): Promise<User[]> => {
+    await getUserById({ id: friendsInput.userIdA.toString() })
+    await getUserById({ id: friendsInput.userIdB.toString() })    
+    const users = await userDb.addFriendship(friendsInput);
+    return users;
+}
+
+const removeFriendship = async (friendsInput: FriendsInput): Promise<User[]> => {
+    await getUserById({ id: friendsInput.userIdA.toString() });
+    await getUserById({ id: friendsInput.userIdB.toString() }); 
+    const users = await userDb.addFriendship(friendsInput);
+    return users;
+}
+
 export default {
     getAllUsers,
     getUserById,
@@ -104,4 +118,6 @@ export default {
     updateUser,
     deleteUserWithId,
     authenticate,
+    addFriendship,
+    removeFriendship,
 };

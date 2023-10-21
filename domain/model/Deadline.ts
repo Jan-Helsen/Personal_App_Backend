@@ -4,6 +4,7 @@ import { User } from "./User";
 export class Deadline {
     readonly id: number;
     readonly name: string;
+    readonly subject: string;
     readonly description: string;
     readonly endDate: Date;
     readonly user: User;

@@ -80,15 +80,6 @@
  *                  id:
  *                      type: number
  *                      description: Id of the habit.
- *          HabitError:
- *              type: object
- *              properties:
- *                  status:
- *                      type: string
- *                      description: Status of the error
- *                  message:
- *                      type: string
- *                      description: Information about the error.
  */
 import express, { Request, Response } from "express";
 import habitService from "../service/habit.service";
@@ -114,7 +105,7 @@ const habitRouter = express.Router();
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/HabitError'
+ *                          $ref: '#/components/schemas/Error'
  */
 habitRouter.get("/", async (req: Request, res: Response) => {
     try {
@@ -144,7 +135,7 @@ habitRouter.get("/", async (req: Request, res: Response) => {
  *              constent:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/HabitError'
+ *                          $ref: '#/components/schemas/Error'
  *      parameters:
  *        - name: id
  *          in: path
@@ -186,7 +177,7 @@ habitRouter.get("/:id", async (req: Request, res: Response) => {
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/HabitError'
+ *                          $ref: '#/components/schemas/Error'
  */
 habitRouter.post("/createhabit", async (req: Request, res: Response) => {
     const habitInput = <HabitInput>req.body;
@@ -223,7 +214,7 @@ habitRouter.post("/createhabit", async (req: Request, res: Response) => {
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/HabitError'
+ *                          $ref: '#/components/schemas/Error'
  */
 habitRouter.put("/", async (req: Request, res: Response) => {
     const habitInput = <HabitUpdateInput>req.body;
@@ -260,7 +251,7 @@ habitRouter.put("/", async (req: Request, res: Response) => {
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/HabitError'
+ *                          $ref: '#/components/schemas/Error'
  */
 habitRouter.delete("/", async (req: Request, res: Response) => {
     const habitInput = <HabitDelete>req.body;

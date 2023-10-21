@@ -7,81 +7,99 @@
  *              scheme: bearer
  *              bearerFormat: JWT
  *      schemas:
- *          Todo:
+ *          Deadline:
  *              type: object
  *              properties:
  *                  id:
  *                      type: number
- *                      description: Id of the Todo.
+ *                      description: Id of the Deadline.
  *                  name:
  *                      type: string
- *                      description: Name of the Todo.
+ *                      description: Name of the Deadline.
+ *                  subject:
+ *                      type: string
+ *                      description: Subject of the Deadline.
  *                  description:
  *                      type: string
- *                      description: Description of the Todo.
+ *                      description: Description of the Deadline.
+ *                  endDate:
+ *                      type: Date
+ *                      description: End date of the Deadline.
  *                  user:
  *                      type: User
  *                      description: User of the todo.
  *                  userId:
  *                      type: number
  *                      description: Id of the user.
- *          Todos:
+ *          Deadlines:
  *              type: array
  *              items:
- *                  $ref: '#/components/schemas/Todo'
- *          TodoInput:
+ *                  $ref: '#/components/schemas/Deadline'
+ *          DeadlineInput:
  *              type: object
  *              properties:
  *                  name:
  *                      type: string
- *                      description: Name of the todo.
+ *                      description: Name of the Deadline.
+ *                  subject:
+ *                      type: string
+ *                      description: Subject of the Deadline.
  *                  description:
  *                      type: string
- *                      description: Description of the todo.
+ *                      description: Description of the Deadline.
+ *                  endDate:
+ *                      type: Date
+ *                      description: End date of the Deadline.
  *                  userId:
  *                      type: number
  *                      description: Id of the user.
- *          TodoUpdateInput:
+ *          DeadlineUpdateInput:
  *              type: object
  *              properties:
  *                  id:
  *                      type: number
- *                      description: Id of the todo.
+ *                      description: Id of the Deadline.
  *                  name:
  *                      type: string
- *                      description: Name of the todo.
+ *                      description: Name of the Deadline.
+ *                  subject:
+ *                      type: string
+ *                      description: Subject of the Deadline.
  *                  description:
  *                      type: string
- *                      description: Description of the todo.
+ *                      description: Description of the Deadline.
+ *                  endDate:
+ *                      type: Date
+ *                      description: End date of the Deadline.
  *                  userId:
  *                      type: number
  *                      description: Id of the user.
- *          TodoDelete:
+ *          DeadlineDelete:
  *              type: object
  *              properties:
  *                  id:
  *                      type: number
- *                      description: Id of the todo.
+ *                      description: Id of the deadline.
  */
 import express, { Request, Response } from "express";
-import todoService from "../service/todo.service";
-import { TodoInput, TodoDelete, TodoUpdateInput } from "../types";
+import deadlineService from "../service/deadline.service";
+import { DeadlineInput, DeadlineDelete, DeadlineUpdateInput } from "../types";
 
-const todoRouter = express.Router();
+const deadlineRouter = express.Router();
 /**
  * @swagger
- * /todos:
+ * /deadlines:
  *  get:
  *      security:
  *          - bearerAuth: []
- *      summary: Get all todos
+ *      summary: Get all deadlines
  *      responses:
  *          200:
- *              description: Returns all todos, if there are no todos, an error is returned.
+ *              description: Returns all deadlines, if there are no deadlines, an error is returned.
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/Todos'
+ *                          $ref: '#/components/schemas/Deadlines'
  *          500:
  *              description: Returns an error
  *              content:
@@ -89,10 +107,10 @@ const todoRouter = express.Router();
  *                      schema:
  *                          $ref: '#/components/schemas/Error'
  */
-todoRouter.get("/", async (req: Request, res: Response) => {
+deadlineRouter.get("/", async (req: Request, res: Response) => {
     try {
-        const todos = await todoService.getAllTodos();
-        res.status(200).json(todos);    
+        const deadlines = await deadlineService.getAllDeadlines();
+        res.status(200).json(deadlines);    
     } 
     catch (error) {
         res.status(500).json({ status: "error", errorMessage: error.message });
@@ -100,21 +118,21 @@ todoRouter.get("/", async (req: Request, res: Response) => {
 });
 /**
  * @swagger
- * /todos/{id}:
+ * /deadlines/{id}:
  *  get:
  *      security:
  *          - bearerAuth: []
- *      summary: Get a todo by ID
+ *      summary: Get a deadlines by ID.
  *      responses:
  *          200:
- *              description: Returns a todo. If the todo does not exist, an error is returned.
+ *              description: Returns a deadline, if the deadline does not exit, an error is returned.
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/Todo'
+ *                          $ref: '#/components/schemas/Deadline'
  *          500:
  *              description: Returns an error
- *              constent:
+ *              content:
  *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/Error'
@@ -127,33 +145,33 @@ todoRouter.get("/", async (req: Request, res: Response) => {
  *              type: integer
  *              format: int64
  */
-todoRouter.get("/:id", async (req: Request, res: Response) => {
+deadlineRouter.get("/:id", async (req: Request, res: Response) => {
     try {
-        const todo = await todoService.getTodoById({ id: parseInt(req.params.id)});
-        res.status(200).json(todo);
-    } 
+        const deadline = await deadlineService.getDeadlineById({ id: parseInt(req.params.id) });
+        res.status(200).json(deadline);
+    }
     catch (error) {
         res.status(500).json({ status: "error", errorMessage: error.message });
     }
-});
+})
 /**
  * @swagger
- * /todos/createtodo:
+ * /deadlines/createdeadline:
  *  post:
- *      summary: Add a todo.
+ *      summary: Add a deadline.
  *      requestBody:
  *          required: true
  *          content:
  *              application/json:
  *                  schema:
- *                      $ref: '#/components/schemas/TodoInput'
+ *                      $ref: '#/components/schemas/DeadlineInput'
  *      responses:
  *          200:
- *              description: The created todo object.
+ *              description: The created deadline object.
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/Todo'
+ *                          $ref: '#/components/schemas/Deadline'
  *          500:
  *              description: Returns an error
  *              content:
@@ -161,11 +179,11 @@ todoRouter.get("/:id", async (req: Request, res: Response) => {
  *                      schema:
  *                          $ref: '#/components/schemas/Error'
  */
-todoRouter.post("/createtodo", async (req: Request, res: Response) => {
-    const todoInput = <TodoInput>req.body;
+deadlineRouter.post("/createdeadline", async (req: Request, res: Response) => {
+    const deadlineInput = <DeadlineInput>req.body;
     try {
-        const todo = await todoService.createTodo(todoInput);
-        res.status(200).json(todo);
+        const deadline = await deadlineService.createDeadline(deadlineInput);
+        res.status(200).json(deadline);    
     }
     catch (error) {
         res.status(500).json({ status: 'error', errorMessage: error.message });
@@ -173,24 +191,24 @@ todoRouter.post("/createtodo", async (req: Request, res: Response) => {
 });
 /**
  * @swagger
- * /todos:
+ * /deadlines:
  *  put:
  *      security:
  *          - bearerAuth: []
- *      summary: Update a todo.
+ *      summary: Update a deadline.
  *      requestBody:
  *          required: true
  *          content:
  *              application/json:
  *                  schema:
- *                      $ref: '#/components/schemas/TodoUpdateInput'
+ *                      $ref: '#/components/schemas/DeadlineUpdateInput'
  *      responses:
  *          200:
- *              description: The updated todo object.
+ *              description: The updated deadline object.
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/Todo'
+ *                          $ref: '#/components/schemas/Deadline'
  *          500:
  *              description: Returns an error
  *              content:
@@ -198,11 +216,11 @@ todoRouter.post("/createtodo", async (req: Request, res: Response) => {
  *                      schema:
  *                          $ref: '#/components/schemas/Error'
  */
-todoRouter.put("/", async (req: Request, res: Response) => {
-    const todoUpdateInput = <TodoUpdateInput>req.body;
+deadlineRouter.put("/", async (req: Request, res: Response) => {
+    const deadlineUpdateInput = <DeadlineUpdateInput>req.body;
     try {
-        const todo = await todoService.updateTodo(todoUpdateInput);
-        res.status(200).json(todo);    
+        const deadline = await deadlineService.updateDeadline(deadlineUpdateInput);
+        res.status(200).json(deadline);
     } 
     catch (error) {
         res.status(500).json({ status: 'error', errorMessage: error.message });
@@ -210,24 +228,24 @@ todoRouter.put("/", async (req: Request, res: Response) => {
 });
 /**
  * @swagger
- * /todos:
+ * /deadlines:
  *  delete:
  *      security:
  *          - bearerAuth: []
- *      summary: Delete a todo.
+ *      summary: Delete a deadline.
  *      requestBody:
  *          required: true
  *          content:
  *              application/json:
  *                  schema:
- *                      $ref: '#/components/schemas/TodoDelete'
+ *                      $ref: '#/components/schemas/DeadlineDelete'
  *      responses:
  *          200:
- *              description: Todo that was deleted.
+ *              description: Deadline that was deleted.
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/Todo'
+ *                          $ref: '#/components/schemas/Deadline'
  *          500:
  *              description: Returns an error
  *              content:
@@ -235,15 +253,15 @@ todoRouter.put("/", async (req: Request, res: Response) => {
  *                      schema:
  *                          $ref: '#/components/schemas/Error'
  */
-todoRouter.delete("/", async (req: Request, res: Response) => {
-    const todoInput = <TodoDelete>req.body;
+deadlineRouter.delete("/", async (req: Request, res: Response) => {
+    const deadlineInput = <DeadlineDelete>req.body;
     try {
-        const todo = await todoService.deleteTodoWithId(todoInput);
-        res.status(200).json(todo);    
+        const deadline = await deadlineService.deleteDeadlineWithId(deadlineInput);
+        res.status(200).json(deadline);    
     } 
     catch (error) {
         res.status(500).json({ status: 'error', errorMessage: error.message });
     }
 });
 
-export default todoRouter;
+export default deadlineRouter;
