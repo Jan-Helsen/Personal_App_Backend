@@ -93,6 +93,7 @@ const habitRouter = express.Router();
  *      security:
  *          - bearerAuth: []
  *      summary: Get all habits
+ *      tags: [Habits]
  *      responses:
  *          200:
  *              description: Returns all habits, if there are no habits, an error is returned.
@@ -123,6 +124,7 @@ habitRouter.get("/", async (req: Request, res: Response) => {
  *      security:
  *          - bearerAuth: []
  *      summary: Get a habit by ID
+ *      tags: [Habits]
  *      responses:
  *          200:
  *              description: Returns a habit. If the habit does not exist, an error is returned.
@@ -159,6 +161,7 @@ habitRouter.get("/:id", async (req: Request, res: Response) => {
  * /habits/createhabit:
  *  post:
  *      summary: Add a habit.
+ *      tags: [Habits]
  *      requestBody:
  *          required: true
  *          content:
@@ -196,6 +199,7 @@ habitRouter.post("/createhabit", async (req: Request, res: Response) => {
  *      security:
  *          - bearerAuth: []
  *      summary: Update a habit.
+ *      tags: [Habits]
  *      requestBody:
  *          required: true
  *          content:
@@ -233,6 +237,7 @@ habitRouter.put("/", async (req: Request, res: Response) => {
  *      security:
  *          - bearerAuth: []
  *      summary: Delete a habit.
+ *      tags: [Habits]
  *      requestBody:
  *          required: true
  *          content:

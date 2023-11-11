@@ -163,6 +163,7 @@ const userRouter = express.Router();
  *      security:
  *          - bearerAuth: []
  *      summary: Get all users
+ *      tags: [Users]
  *      responses:
  *          200:
  *              description: Returns all users, if there are no users, an error is returned.
@@ -193,6 +194,7 @@ userRouter.get("/", async (req: Request, res: Response) => {
  *      security:
  *          - bearerAuth: []
  *      summary: Get a user by ID
+ *      tags: [Users]
  *      responses:
  *          200:
  *              description: Returns a user. If the user does not exist, an error is returned.
@@ -231,6 +233,7 @@ userRouter.get("/:id", async (req: Request, res: Response) => {
  *      security:
  *          - bearerAuth: []
  *      summary: Get a user by email.
+ *      tags: [Users]
  *      requestBody:
  *          required: true
  *          content:
@@ -258,6 +261,7 @@ userRouter.post('/getUserByEmail', async (req: Request, res: Response) => {
         res.status(200).json(user);
     } 
     catch (error) {
+        console.log(error)
         res.status(500).json({ status: "error", errorMessage: error.message });    
     }
 });
@@ -266,6 +270,7 @@ userRouter.post('/getUserByEmail', async (req: Request, res: Response) => {
  * /users/login:
  *  post:
  *      summary: Login as a user.
+ *      tags: [Users]
  *      requestBody:
  *          required: true
  *          content:
@@ -301,6 +306,7 @@ userRouter.post("/login", async (req: Request, res: Response) => {
  * /users/signup:
  *  post:
  *      summary: Add a user.
+ *      tags: [Users]
  *      requestBody:
  *          required: true
  *          content:
@@ -338,6 +344,7 @@ userRouter.post("/signup", async (req: Request, res: Response) => {
  *      security:
  *          - bearerAuth: []
  *      summary: Update a user.
+ *      tags: [Users]
  *      requestBody:
  *          required: true
  *          content:
@@ -375,6 +382,7 @@ userRouter.put("/", async (req: Request, res: Response) => {
  *      security:
  *          - bearerAuth: []
  *      summary: Delete a user.
+ *      tags: [Users]
  *      requestBody:
  *          required: true
  *          content:
@@ -412,6 +420,7 @@ userRouter.delete("/", async (req: Request, res: Response) => {
  *      security:
  *          - bearerAuth: []
  *      summary: Add a Friend.
+ *      tags: [Users]
  *      requestBody:
  *          required: true
  *          content:
@@ -449,6 +458,7 @@ userRouter.post("/addFriend", async (req: Request, res: Response) => {
  *      security:
  *          - bearerAuth: []
  *      summary: Remove a Friend.
+ *      tags: [Users]
  *      requestBody:
  *          required: true
  *          content:

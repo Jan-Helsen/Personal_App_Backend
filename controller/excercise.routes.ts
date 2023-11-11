@@ -67,6 +67,7 @@ const excerciseRouter = express.Router();
  *      security:
  *          - bearerAuth: []
  *      summary: Get all excercises
+ *      tags: [Excercises]
  *      responses:
  *          200:
  *              description: Returns all excercises, if there are no excercises, an error is returned.
@@ -97,6 +98,7 @@ excerciseRouter.get("/", async (req: Request, res: Response) => {
  *      security:
  *          - bearerAuth: []
  *      summary: Get a excercise by ID
+ *      tags: [Excercises]
  *      responses:
  *          200:
  *              description: Returns a excercise. If the excercise does not exist, an error is returned.
@@ -133,6 +135,7 @@ excerciseRouter.get("/:id", async (req: Request, res: Response) => {
  * /excercises/createexcercise:
  *  post:
  *      summary: Add an excercise.
+ *      tags: [Excercises]
  *      requestBody:
  *          required: true
  *          content:
@@ -170,6 +173,7 @@ excerciseRouter.post("/createexcercise", async (req: Request, res: Response) => 
  *      security:
  *          - bearerAuth: []
  *      summary: Update an excercise.
+ *      tags: [Excercises]
  *      requestBody:
  *          required: true
  *          content:
@@ -207,6 +211,7 @@ excerciseRouter.put("/", async (req: Request, res: Response) => {
  *      security:
  *          - bearerAuth: []
  *      summary: Delete an excercise.
+ *      tags: [Excercises]
  *      requestBody:
  *          required: true
  *          content:

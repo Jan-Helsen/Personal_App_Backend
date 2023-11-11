@@ -16,13 +16,13 @@ dotenv.config();
 const port = process.env.APP_PORT || 8000;
 const jwtSecret = process.env.JWT_SECRET;
 
-app.use(cors({ origin: "http://localhost:8000"}));
+app.use(cors({ origin: "http://localhost:3000"}));
 app.use(bodyParser.json());
-// app.use(
-//     expressjwt({ secret: jwtSecret, algorithms: ['HS256'] }).unless({
-//         path: [/^\/api-docs\/.*/, '/users/login', '/users/signup', '/status'],
-//     })
-// );
+app.use(
+    expressjwt({ secret: jwtSecret, algorithms: ['HS256'] }).unless({
+        path: [/^\/api-docs\/.*/, '/users/login', '/users/signup', '/status'],
+    })
+);
 
 const swaggerOpts = {
     definition: {

@@ -36,12 +36,19 @@ const getDeadlineById = async ({ id }: DeadlineDelete): Promise<Deadline> => {
 const createDeadline = async (deadlineInput: DeadlineInput): Promise<Deadline> => {
     try {
         const deadlinePrisma = await database.deadline.create({
-            data: deadlineInput,
+            data: {
+                name: deadlineInput.name,
+                subject: deadlineInput.subject,
+                description: deadlineInput.description,
+                endDate: new Date(deadlineInput.endDate),
+                userId: deadlineInput.userId,
+            },
         })
         return mapToDeadline(deadlinePrisma) 
     } 
     catch (error) {
-        
+        console.log(error)
+        throw new Error("error database check logs")
     }
 };
 
@@ -49,7 +56,13 @@ const updateDeadline = async (deadlineUpdateInput: DeadlineUpdateInput): Promise
     try {
         const deadlinePrisma = await database.deadline.update({
             where: { id: deadlineUpdateInput.id },
-            data: deadlineUpdateInput,
+            data: {
+                name: deadlineUpdateInput.name,
+                subject: deadlineUpdateInput.subject,
+                description: deadlineUpdateInput.description,
+                endDate: new Date(deadlineUpdateInput.endDate),
+                userId: deadlineUpdateInput.userId,
+            },
         })
         return mapToDeadline(deadlinePrisma);
     } 

@@ -75,6 +75,7 @@ const todoRouter = express.Router();
  *      security:
  *          - bearerAuth: []
  *      summary: Get all todos
+ *      tags: [Todos]
  *      responses:
  *          200:
  *              description: Returns all todos, if there are no todos, an error is returned.
@@ -105,6 +106,7 @@ todoRouter.get("/", async (req: Request, res: Response) => {
  *      security:
  *          - bearerAuth: []
  *      summary: Get a todo by ID
+ *      tags: [Todos]
  *      responses:
  *          200:
  *              description: Returns a todo. If the todo does not exist, an error is returned.
@@ -141,6 +143,7 @@ todoRouter.get("/:id", async (req: Request, res: Response) => {
  * /todos/createtodo:
  *  post:
  *      summary: Add a todo.
+ *      tags: [Todos]
  *      requestBody:
  *          required: true
  *          content:
@@ -178,6 +181,7 @@ todoRouter.post("/createtodo", async (req: Request, res: Response) => {
  *      security:
  *          - bearerAuth: []
  *      summary: Update a todo.
+ *      tags: [Todos]
  *      requestBody:
  *          required: true
  *          content:
@@ -215,6 +219,7 @@ todoRouter.put("/", async (req: Request, res: Response) => {
  *      security:
  *          - bearerAuth: []
  *      summary: Delete a todo.
+ *      tags: [Todos]
  *      requestBody:
  *          required: true
  *          content:

@@ -93,6 +93,7 @@ const deadlineRouter = express.Router();
  *      security:
  *          - bearerAuth: []
  *      summary: Get all deadlines
+ *      tags: [Deadline]
  *      responses:
  *          200:
  *              description: Returns all deadlines, if there are no deadlines, an error is returned.
@@ -123,6 +124,7 @@ deadlineRouter.get("/", async (req: Request, res: Response) => {
  *      security:
  *          - bearerAuth: []
  *      summary: Get a deadlines by ID.
+ *      tags: [Deadline]
  *      responses:
  *          200:
  *              description: Returns a deadline, if the deadline does not exit, an error is returned.
@@ -159,6 +161,7 @@ deadlineRouter.get("/:id", async (req: Request, res: Response) => {
  * /deadlines/createdeadline:
  *  post:
  *      summary: Add a deadline.
+ *      tags: [Deadline]
  *      requestBody:
  *          required: true
  *          content:
@@ -196,6 +199,7 @@ deadlineRouter.post("/createdeadline", async (req: Request, res: Response) => {
  *      security:
  *          - bearerAuth: []
  *      summary: Update a deadline.
+ *      tags: [Deadline]
  *      requestBody:
  *          required: true
  *          content:
@@ -233,6 +237,7 @@ deadlineRouter.put("/", async (req: Request, res: Response) => {
  *      security:
  *          - bearerAuth: []
  *      summary: Delete a deadline.
+ *      tags: [Deadline]
  *      requestBody:
  *          required: true
  *          content:
