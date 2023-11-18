@@ -110,3 +110,24 @@ export type ExcerciseUpdateInput = {
 export type ExcerciseDelete = {
     id: number;
 }
+
+export type UserOnExcerciseInput = {
+    userId: number;
+    excerciseId: number;
+    eightRepMax: number;
+    tenRepMax: number;
+    twelveRepMax: number;
+}
+
+export type UserOnExcerciseUpdateInput = {
+    userId: number;
+    excerciseId: number;
+    eightRepMax: number;
+    tenRepMax: number;
+    twelveRepMax: number;
+}
+
+export type UserOnExcerciseDelete = {
+    userId: number;
+    excerciseId: number;
+}

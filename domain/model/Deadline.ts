@@ -13,6 +13,7 @@ export class Deadline {
     constructor(deadline: Deadline) {
         this.id = deadline.id;
         this.name = deadline.name;
+        this.subject = deadline.subject;
         this.description = deadline.description;
         this.endDate = deadline.endDate;
         this.user = deadline.user;

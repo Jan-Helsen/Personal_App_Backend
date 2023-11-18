@@ -10,6 +10,7 @@ import habitRouter from './controller/habit.routes';
 import todoRouter from './controller/todo.routes';
 import deadlineRouter from './controller/deadline.routes';
 import excerciseRouter from './controller/excercise.routes';
+import userOnExcerciseRouter from './controller/userOnExcercise.routes';
 
 const app = express();
 dotenv.config();
@@ -18,11 +19,11 @@ const jwtSecret = process.env.JWT_SECRET;
 
 app.use(cors({ origin: "http://localhost:3000"}));
 app.use(bodyParser.json());
-app.use(
-    expressjwt({ secret: jwtSecret, algorithms: ['HS256'] }).unless({
-        path: [/^\/api-docs\/.*/, '/users/login', '/users/signup', '/status'],
-    })
-);
+// app.use(
+//     expressjwt({ secret: jwtSecret, algorithms: ['HS256'] }).unless({
+//         path: [/^\/api-docs\/.*/, '/users/login', '/users/signup', '/status'],
+//     })
+// );
 
 const swaggerOpts = {
     definition: {
@@ -42,6 +43,7 @@ app.use("/todos", todoRouter);
 app.use("/habits", habitRouter);
 app.use("/deadlines", deadlineRouter);
 app.use("/excercises", excerciseRouter);
+app.use("/userOnExcercise", userOnExcerciseRouter)
 
 app.get('/status', (req, res) => {
     res.json({ message: 'Back-end is running...' });

@@ -40,6 +40,7 @@ const getUserByEmail = async ({ email } : UserEmail): Promise<User> => {
             include: { todos: true, habits: true, deadlines: true },
         });
         if (userPrisma) {
+            console.log(mapToUser(userPrisma).deadlines[0])
             return mapToUser(userPrisma);
         }
         return null;
