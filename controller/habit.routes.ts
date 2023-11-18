@@ -44,9 +44,6 @@
  *                  description:
  *                      type: string
  *                      description: Description of the habit.
- *                  updatedAt:
- *                      type: Date
- *                      description: time of last update.
  *                  streak:
  *                      type: number
  *                      description: Time of streak for the habit ann user.
@@ -65,9 +62,6 @@
  *                  description:
  *                      type: string
  *                      description: Description of the habit.
- *                  updatedAt:
- *                      type: Date
- *                      description: time of last update.
  *                  streak:
  *                      type: number
  *                      description: Time of streak for the habit and user.

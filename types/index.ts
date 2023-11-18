@@ -40,7 +40,6 @@ export type FriendsInput = {
 export type HabitInput = {
     name: string;
     description: string;
-    updatedAt: Date;
     streak: number;
     userId: number;
 }
@@ -53,7 +52,6 @@ export type HabitUpdateInput = {
     id: number;
     name: string;
     description: string;
-    updatedAt: Date;
     streak: number;
     userId: number;
 }
